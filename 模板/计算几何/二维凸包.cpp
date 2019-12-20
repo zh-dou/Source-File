@@ -37,7 +37,7 @@ inline double dot(const Point &a,const Point &b){return a.x*b.x+a.y*b.y;}
 inline double mul(const Point &a,const Point &b){return a.x*b.y-a.y*b.x;}
 int n,tot,del[N];
 inline bool cmp(const Point &a,const Point &b){
-	if(fabs(mul(a,b))<=exp) return a.x<b.y;
+	if(fabs(mul(a,b))<=exp) return a.x<b.x;
 	return mul(a,b)>exp; 
 }
 inline void get_convex(){
