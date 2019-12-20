@@ -72,12 +72,11 @@ signed main(){
 //	for(int i=2;i<=tot;i++){
 //		cout<<dot(hull[i]-hull[i-1],hull[i]-hull[i-1])<<"\n";
 //	}
-	double ans=1.0*sqrt(1.0*dot(hull[1]-hull[tot],hull[1]-hull[tot]));
+	double ans=sqrt(dot(hull[1]-hull[tot],hull[1]-hull[tot]));
 //	cout<<ans<<"\n";
-	for(int i=2;i<=tot;i++) ans=1.0*ans+1.0*sqrt(1.0*dot(hull[i]-hull[i-1],hull[i]-hull[i-1]));
+	for(int i=2;i<=tot;i++) ans=ans+sqrt(dot(hull[i]-hull[i-1],hull[i]-hull[i-1]));
 	printf("%.2f\n",ans);
 //	fclose(stdin);
 //	fclose(stdout);
     return 0;
 }
-
