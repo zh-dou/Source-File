@@ -10,7 +10,7 @@
 using namespace std;
 #define N 10010
 #define int long long
-#define exp 1e-10
+#define eps 1e-10
 #define debug cout<<__LINE__<<" "<<__FUNCTION__<<"\n"
 
 inline int read(){
@@ -37,8 +37,8 @@ inline double dot(const Point &a,const Point &b){return a.x*b.x+a.y*b.y;}
 inline double mul(const Point &a,const Point &b){return a.x*b.y-a.y*b.x;}
 int n,tot,del[N];
 inline bool cmp(const Point &a,const Point &b){
-	if(fabs(mul(a,b))<=exp) return a.x<b.x;
-	return mul(a,b)>exp; 
+	if(fabs(mul(a,b))<=eps) return a.x<b.x;
+	return mul(a,b)>eps; 
 }
 inline void get_convex(){
 	if(n<=2) return;
