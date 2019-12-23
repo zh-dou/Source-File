@@ -6,14 +6,14 @@
 #include<iostream>
 #include<algorithm>
 using namespace std;
-#define int long long
-#define alpha 0.75
-#define N 2000001
+//#define int long long
+#define alpha 0.80
+#define N 2000010
 inline int read(){
-	int x=0,y=1;char ch=getchar();
-	while(ch>'9'||ch<'0'){if(ch=='-')y=-1;ch=getchar();}
-	while(ch>='0'&&ch<='9'){x=(x<<3)+(x<<1)+(ch^48);ch=getchar();}
-	return x*y;
+    int x=0,y=1;char ch=getchar();
+    while(ch>'9'||ch<'0'){if(ch=='-')y=-1;ch=getchar();}
+    while(ch>='0'&&ch<='9'){x=(x<<3)+(x<<1)+(ch^48);ch=getchar();}
+    return x*y;
 }
 struct scape_goat{
     int son[2],val,valid,total;
@@ -50,7 +50,7 @@ inline void rebuild(int &now){
     tot=0;
     dfs(now);
     if(tot) build(1,tot,now);
-    else now = 0;
+    else now=0;
 }
 inline int find_rank(int k){
     int now=root,ans=1;
@@ -85,14 +85,16 @@ inline void insert(int &now, int val){
     ++tree[now].total;++tree[now].valid;
     if(tree[now].val >= val) insert(tree[now].son[0], val); 
     else insert(tree[now].son[1], val);
-    if(!isbad(now)){
-        if(to_rebuild){
-            if(tree[now].son[0]==to_rebuild) rebuild(tree[now].son[0]);
+    if(!isbad(now))
+    {
+        if(to_rebuild)
+        {
+            if(tree[now].son[0] == to_rebuild) rebuild(tree[now].son[0]);
             else rebuild(tree[now].son[1]);
-            to_rebuild=0;
+            to_rebuild = 0;
         }
     }
-    else to_rebuild=now;
+    else to_rebuild = now;
 }
 inline void delete_rank(int &now, int tar){
     if(tree[now].trust&&tree[tree[now].son[0]].valid+ 1==tar){
@@ -101,10 +103,11 @@ inline void delete_rank(int &now, int tar){
     --tree[now].valid;
     if(tree[tree[now].son[0]].valid + tree[now].trust >= tar) delete_rank(tree[now].son[0], tar);
     else delete_rank(tree[now].son[1],tar-tree[tree[now].son[0]].valid-tree[now].trust);
+//    if(isbad(now)) to_rebuild=now;
 }
 inline void delete_val(int tar){
     delete_rank(root, find_rank(tar));
-    if((double)tree[root].total*alpha>tree[root].valid) rebuild(root);
+    if(isbad(root)) rebuild(root);
 }
 signed main(){
     int opt, x, m;
@@ -112,10 +115,7 @@ signed main(){
     m=read();
     while(m--){
         opt=read();x=read();
-        if(opt==1) {
-			insert(root, x);
-//			if(to_rebuild) rebuild(to_rebuild);to_rebuild=0;
-		}
+        if(opt==1) {insert(root,x);}
         if(opt==2) {delete_val(x);}
         if(opt==3) {cout<<find_rank(x)<<"\n";}
         if(opt==4) {cout<<find_kth(x)<<"\n";}
