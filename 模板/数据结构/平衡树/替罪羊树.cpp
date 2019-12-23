@@ -15,12 +15,12 @@ inline int read(){
 	while(ch>='0'&&ch<='9'){x=(x<<3)+(x<<1)+(ch^48);ch=getchar();}
 	return x*y;
 }
-struct scape_goat{
+struct Scape_goat{
 	int son[2],val,valid,total;
 	int trust;
 }tree[N];
 int memory[N],pool,cur[N],tot;
-int root,cnt,to_rebuild;
+int root,cnt,to_rebuild,to_rebuild_fa,which_child;
 inline int isbad(int now){
 	if((double)tree[now].valid*alpha <= (double)max(tree[tree[now].son[0]].valid, tree[tree[now].son[1]].valid)) return true;
 	return false;
@@ -28,16 +28,16 @@ inline int isbad(int now){
 inline void dfs(int now){
 	if(!now) return;
 	dfs(tree[now].son[0]);
-	if(tree[now].trust) cur[++tot] = now;
-	else memory[++pool] = now;
+	if(tree[now].trust) cur[++tot]=now;
+	else memory[++pool]=now;
 	dfs(tree[now].son[1]);
 }
-inline void build(int l, int r, int &now){
-	int mid=(l+r)>>1; 
-	now=cur[mid]; 
+inline void build(int l,int r,int &now){
+	int mid=(l+r)>>1;
+	now=cur[mid];
 	if(l==r){
-		tree[now].son[0] = tree[now].son[1] = 0;
-		tree[now].total = tree[now].valid = 1;
+		tree[now].son[0]=tree[now].son[1]=0;
+		tree[now].total=tree[now].valid=1;
 		return; 
 	}
 	if(l<mid) build(l,mid-1,tree[now].son[0]);
@@ -78,33 +78,35 @@ inline int find_kth(int k){
 inline void insert(int &now, int val){
 	if(!now){
 		now=memory[pool--];tree[now].val=val;
-		tree[now].trust =tree[now].total=tree[now].valid=1;
+		tree[now].trust=tree[now].total=tree[now].valid=1;
 		tree[now].son[0]=tree[now].son[1]=0;
 		return;
 	}
 	++tree[now].total;++tree[now].valid;
-	if(tree[now].val >= val) insert(tree[now].son[0], val); 
-	else insert(tree[now].son[1], val);
+	if(tree[now].val>=val) insert(tree[now].son[0],val); 
+	else insert(tree[now].son[1],val);
 	if(!isbad(now)){
 		if(to_rebuild){
-			if(tree[now].son[0] == to_rebuild) rebuild(tree[now].son[0]);
-			else rebuild(tree[now].son[1]);
-			to_rebuild = 0;
+			which_child=(tree[now].son[1]==to_rebuild);
+			to_rebuild_fa=now;
+			to_rebuild=0;
 		}
 	}
-	else to_rebuild = now;
+	else{
+		to_rebuild=now;to_rebuild_fa=0;
+	}
 }
 inline void delete_rank(int &now, int tar){
-	if(tree[now].trust&&tree[tree[now].son[0]].valid+ 1==tar){
+	if(tree[now].trust&&tree[tree[now].son[0]].valid+1==tar){
 		tree[now].trust=0;tree[now].valid--;return;
 	}
 	--tree[now].valid;
-	if(tree[tree[now].son[0]].valid + tree[now].trust >= tar) delete_rank(tree[now].son[0], tar);
+	if(tree[tree[now].son[0]].valid+tree[now].trust >= tar) delete_rank(tree[now].son[0],tar);
 	else delete_rank(tree[now].son[1],tar-tree[tree[now].son[0]].valid-tree[now].trust);
 //	if(isbad(now)) to_rebuild=now;
 }
 inline void delete_val(int tar){
-	delete_rank(root, find_rank(tar));
+	delete_rank(root,find_rank(tar));
 	if(isbad(root)) rebuild(root);
 }
 signed main(){
@@ -113,13 +115,21 @@ signed main(){
 	m=read();
 	while(m--){
 		opt=read();x=read();
-		if(opt==1) {insert(root, x);}
-		if(opt==2) {delete_val(x);}
-		if(opt==3) {cout<<find_rank(x)<<"\n";}
-		if(opt==4) {cout<<find_kth(x)<<"\n";}
-		if(opt==5) {cout<<find_kth(find_rank(x)-1)<<"\n";}
-		if(opt==6) {cout<<find_kth(find_rank(x+1))<<"\n";}
-//		if(to_rebuild){rebuild(to_rebuild);to_rebuild=0;}
+		if(opt==1){
+			insert(root,x);
+			if(to_rebuild){
+				if(!to_rebuild_fa){
+					rebuild(root);
+				}else{
+					rebuild(tree[to_rebuild_fa].son[which_child]);
+				}
+			}
+		}
+		if(opt==2){delete_val(x);}
+		if(opt==3){cout<<find_rank(x)<<"\n";}
+		if(opt==4){cout<<find_kth(x)<<"\n";}
+		if(opt==5){cout<<find_kth(find_rank(x)-1)<<"\n";}
+		if(opt==6){cout<<find_kth(find_rank(x+1))<<"\n";}
 	}
 	return 0;
 }
