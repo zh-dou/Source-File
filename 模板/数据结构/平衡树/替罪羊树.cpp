@@ -16,13 +16,13 @@ inline int read(){
 	return x*y;
 }
 struct Scape_goat{
-	int son[2],val,valid,total;
+	int son[2],val,valid;
 	int trust;
 }tree[N];
 int memory[N],pool,cur[N],tot;
 int root,cnt,to_rebuild,to_rebuild_fa,which_child;
 inline int isbad(int now){
-	if((double)tree[now].valid*alpha <= (double)max(tree[tree[now].son[0]].valid, tree[tree[now].son[1]].valid)) return true;
+	if((double)tree[now].valid*alpha<=(double)max(tree[tree[now].son[0]].valid, tree[tree[now].son[1]].valid)) return true;
 	return false;
 }
 inline void dfs(int now){
@@ -32,18 +32,17 @@ inline void dfs(int now){
 	else memory[++pool]=now;
 	dfs(tree[now].son[1]);
 }
-inline void build(int l,int r,int &now){
+void build(int l,int r,int &now){
 	int mid=(l+r)>>1;
 	now=cur[mid];
 	if(l==r){
 		tree[now].son[0]=tree[now].son[1]=0;
-		tree[now].total=tree[now].valid=1;
+		tree[now].valid=1;
 		return; 
 	}
 	if(l<mid) build(l,mid-1,tree[now].son[0]);
 	else tree[now].son[0]=0;
 	build(mid+1,r,tree[now].son[1]); 
-	tree[now].total=tree[tree[now].son[0]].total+tree[tree[now].son[1]].total+1; 
 	tree[now].valid=tree[tree[now].son[0]].valid+tree[tree[now].son[1]].valid+1;
 }
 inline void rebuild(int &now){
@@ -78,11 +77,11 @@ inline int find_kth(int k){
 inline void insert(int &now, int val){
 	if(!now){
 		now=memory[pool--];tree[now].val=val;
-		tree[now].trust=tree[now].total=tree[now].valid=1;
+		tree[now].trust=tree[now].valid=1;
 		tree[now].son[0]=tree[now].son[1]=0;
 		return;
 	}
-	++tree[now].total;++tree[now].valid;
+	++tree[now].valid;
 	if(tree[now].val>=val) insert(tree[now].son[0],val); 
 	else insert(tree[now].son[1],val);
 	if(!isbad(now)){
