@@ -20,7 +20,7 @@ struct Scape_goat{
 	int trust;
 }tree[N];
 int memory[N],pool,cur[N],tot;
-int root,cnt,to_rebuild,to_rebuild_fa,which_child;
+int root,cnt,to_rebuild_point,to_rebuild,to_rebuild_fa,which_child;
 inline int isbad(int now){
 	if((double)tree[now].valid*alpha<=(double)max(tree[tree[now].son[0]].valid, tree[tree[now].son[1]].valid)) return true;
 	return false;
@@ -88,10 +88,10 @@ inline void insert(int &now, int val){
 		if(to_rebuild){
 			which_child=(tree[now].son[1]==to_rebuild);
 			to_rebuild_fa=now;
+			to_rebuild_point=to_rebuild;
 			to_rebuild=0;
 		}
-	}
-	else{
+	}else{
 		to_rebuild=now;to_rebuild_fa=0;
 	}
 }
@@ -116,12 +116,13 @@ signed main(){
 		opt=read();x=read();
 		if(opt==1){
 			insert(root,x);
-			if(to_rebuild){
+			if(to_rebuild_point){
 				if(!to_rebuild_fa){
 					rebuild(root);
 				}else{
 					rebuild(tree[to_rebuild_fa].son[which_child]);
 				}
+				to_rebuild_point=to_rebuild=to_rebuild_fa=which_child=0;
 			}
 		}
 		if(opt==2){delete_val(x);}
