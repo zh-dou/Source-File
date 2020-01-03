@@ -30,8 +30,8 @@ double r;
 struct Point{
 	double x,y;
 	Point(double _x=0.0,double _y=0.0){x=_x;y=_y;}
-	friend Point operator + (const Point &A,const Point &B){return Point(B.x+A.x,B.y+A.y);}
-	friend Point operator - (const Point &A,const Point &B){return Point(B.x-A.x,B.y-A.y);}
+	friend Point operator + (const Point &A,const Point &B){return Point(A.x+B.x,A.y+B.y);}
+	friend Point operator - (const Point &A,const Point &B){return Point(A.x-B.x,A.y-B.y);}
 	friend Point operator * (const Point &A,const double &B){return Point(A.x*B,A.y*B);}
 }a[N],C,p1,p2;
 inline double mul(const Point &A,const Point &B){return A.x*B.y-A.y*B.x;}
@@ -45,18 +45,16 @@ struct Line{
 }l1,l2;
 inline Point Linemeet(const Line &A,const Line &B){
 	Point res=A.p-B.p;
-//	cout<<A.v.x<<" "<<A.v.y<<"             meet\n";
-	return A.v*(mul(B.v,res)/mul(A.v,B.v))-A.p;
+	return A.p+A.v*(mul(B.v,res)/mul(A.v,B.v));
 }
-inline Point Circumcircle(const Point &A,const Point &B,const Point &C){
+inline Point Circumcircle(const Point &P,const Point &A,const Point &B){
 //	cout<<p1.x<<" "<<p1.y<<"         point\n";
-	return Linemeet(Line((A+B)*0.5,rot(B-A)),Line((A+C)*0.5,rot(C-A)));
+	return Linemeet(Line((A+P)*0.5,rot(A-P)),Line((B+P)*0.5,rot(B-P)));
 }
 signed main(){
 // 	freopen(".in","r",stdin);
 // 	freopen(".out","w",stdout);
 	n=read();
-	double x,y;
 	for(int i=1;i<=n;i++){
 		scanf("%lf %lf",&a[i].x,&a[i].y);
 	}
@@ -85,4 +83,3 @@ signed main(){
 //	fclose(stdout);
     return 0;
 }
-
