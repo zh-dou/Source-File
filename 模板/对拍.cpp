@@ -8,14 +8,14 @@
 using namespace std;
 #define int long long
 signed main(){
-	system("g++ date.cpp -o date.exe -g -Wall");
+	system("g++ data.cpp -o data.exe -g -Wall");
 	system("g++ baoli.cpp -o baoli.exe -g -Wall");
 	system("g++ std.cpp -o std.exe -g -Wall");
 	int cnt=0;
 	double a,b;
 	while(1){
 		++cnt;
-		system("date.exe > 01.in");
+		system("data.exe > 01.in");
 		system("std.exe < 01.in > 01.out");
 		a=1.0*clock();
 		system("baoli.exe < 01.in > 01.ans");
