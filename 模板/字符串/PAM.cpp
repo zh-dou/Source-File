@@ -8,7 +8,7 @@
 #include<iostream>
 #include<algorithm>
 using namespace std;
-#define N 5000010
+#define N 500010
 #define int long long
 #define debug cout<<__LINE__<<" "<<__FUNCTION__<<"\n"
 
@@ -36,7 +36,7 @@ struct PAM{
 		tree[1].len=-1;tree[0].len=0;
 		tree[1].fail=tree[0].fail=1;
 	}
-	inline int Jump(int pos,int x){
+	inline int Fail(int pos,int x){
 		while(a[pos-tree[x].len-1]!=a[pos]){
 			x=tree[x].fail;
 //			cout<<pos<<" "<<x<<"\n";
@@ -44,10 +44,10 @@ struct PAM{
 		return x;
 	}
 	inline void Insert(int pos){
-		int p=Jump(pos,last);
+		int p=Fail(pos,last);
 		if(!tree[p].ch[a[pos]]){
 			tree[++cnt].len=tree[p].len+2;
-			int res=Jump(pos,tree[p].fail);
+			int res=Fail(pos,tree[p].fail);
 			tree[cnt].fail=tree[res].ch[a[pos]];
 			tree[cnt].num=tree[tree[cnt].fail].num+1;
 			tree[p].ch[a[pos]]=cnt;
@@ -72,4 +72,3 @@ signed main(){
 //	fclose(stdout);
     return 0;
 }
-
