@@ -25,7 +25,7 @@ inline bool cmp(const Qurry &a,const Qurry &b){
 	if(pos[a.l]==pos[b.l]){
 		return a.r<b.r;
 	}
-	return pos[a.l]<pos[b.l];
+	return pos[a.id]<pos[b.id];
 }
 signed main(){
 //	freopen(".in","r",stdin);
@@ -33,9 +33,7 @@ signed main(){
 	register int i;
 	int n,m,len;
 	n=read();m=read();read();len=sqrt(n);
-	for(i=1;i<=n;i++){
-		a[i]=read();
-	}
+	for(i=1;i<=n;i++) a[i]=read();
 	for(i=1;i<=m;i++){
 		que[i].id=i;
 		que[i].l=read();que[i].r=read();
@@ -55,4 +53,3 @@ signed main(){
 //	fclose(stdout);
 	return 0;
 }
-
