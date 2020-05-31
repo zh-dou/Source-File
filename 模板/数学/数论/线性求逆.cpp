@@ -44,12 +44,10 @@ signed main(){
 	//
 	//1!~n!
 	int ans=1;
-	for(int i=2;i,=n;i++) ans=ans*i%mod;
-	inv[n]=ksm(ans,mod-2);
-	for(int i=n-1;i>0;i++) inv[i]=inv[i+1]*(i+1)%mod;
-	// 
+	for(int i=2;i<=n;i++) ans=ans*i%mod;
+	inv[n]=ksm(ans,mod-2,mod);
+	for(int i=n-1;i>0;i--) inv[i]=inv[i+1]*(i+1)%mod;
 //	fclose(stdin);
 //	fclose(stdout);
 	return 0;
 }
-
