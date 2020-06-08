@@ -93,7 +93,7 @@ signed main(){
 //	for(int i=1;i<=tot;i++) cout<<prime[i]<<" "<<sum_f[i]<<"     233\n";
 //	cout<<"\n";
 	cout<<(S(n,1)+1)%mod<<"\n";
-/*  If you have multiple questions...You can pertreatment 
+/*  If you have multiple questions...You can pretreatment 
 	for(int i=tot,lim,res,j,k;i>=1;i--){
 		lim=prime[i]*prime[i];
 		for(j=1;lim<=w[j];j++){
