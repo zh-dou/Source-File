@@ -42,8 +42,21 @@ signed main(){
 		for(int j=2*i;j<=n;j+=i) ispri[j]=1;
 	}
 	for(int i=1;i<=n;i++) t[i]=getnext();
+	/*前缀和*/ 
 	for(int i=1;i<=tot;i++){
 		for(int j=1;prime[i]*j<=n;j++) t[j*prime[i]]+=t[j];
+	}
+	/*前缀和逆*/
+	for(int i=1;i<=tot;i++){
+		for(int j=(n/prime[i]);j>=1;j--) t[j*prime[i]]-=t[j];
+	}
+	/*后缀和*/
+	for(int i=1;i<=tot;i++){
+		for(int j=(n/prime[i]);j>=1;j--) t[j]+=t[j*prime[i]];
+	}
+	/*后缀和逆*/
+	for(int i=1;i<=tot;i++){
+		for(int j=1;prime[i]*j<=n;j++) t[j]-=t[j*prime[i]];
 	}
 	for(int i=1;i<=n;i++) ans^=t[i];
 	cout<<ans<<"\n";
@@ -51,4 +64,3 @@ signed main(){
 //	fclose(stdout);
 	return 0;
 }
-
